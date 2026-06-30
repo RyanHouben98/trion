@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Trion.Domain/Trion.Domain.csproj" />
+  </Folder>
+</Solution>
