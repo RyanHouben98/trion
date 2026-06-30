@@ -16,6 +16,9 @@ public sealed class Coach
 
     public static Coach Create(string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentNullException(nameof(name));
+            
         return new Coach(CoachId.New(), name);
     }
 }
