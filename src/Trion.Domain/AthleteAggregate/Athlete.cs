@@ -16,6 +16,9 @@ public sealed class Athlete
 
     public static Athlete Create(string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentNullException(nameof(name));
+        
         return new Athlete(AthleteId.New(), name);
     }
 }

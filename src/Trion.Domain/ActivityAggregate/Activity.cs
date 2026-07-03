@@ -6,16 +6,19 @@ public sealed class Activity
 {
     public ActivityId Id { get; }
     
-    public string Name { get; }
+    public string Title { get; }
     
-    private  Activity(ActivityId id, string name)
+    private  Activity(ActivityId id, string title)
     {
         Id = id;
-        Name = name;
+        Title = title;
     }
 
-    public static Activity Create(string name)
+    public static Activity Create(string title)
     {
-        return new Activity(ActivityId.New(), name);
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentNullException(nameof(title));
+        
+        return new Activity(ActivityId.New(), title);
     }
 }

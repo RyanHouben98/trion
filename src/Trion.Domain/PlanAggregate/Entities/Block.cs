@@ -16,6 +16,9 @@ public sealed class Block
 
     public static Block Create(string title)
     {
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentNullException(nameof(title));
+        
         return new Block(BlockId.New(), title);
     }
 }

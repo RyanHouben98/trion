@@ -16,6 +16,9 @@ public sealed class Plan
 
     public static Plan Create(string title)
     {
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentNullException(nameof(title));
+        
         return new Plan(PlanId.New(), title);
     }
 }

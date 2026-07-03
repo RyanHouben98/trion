@@ -1,16 +1,16 @@
 using FluentAssertions;
-using Trion.Domain.CoachAggregate;
+using Trion.Domain.AthleteAggregate;
 
-namespace Trion.Domain.UnitTests.CoachAggregateUnitTests;
+namespace Trion.Domain.UnitTests.AthleteAggregateUnitTests;
 
-public class CoachUnitTests
+public class AthleteUnitTests
 {
     [Fact]
-    public void Create_ShouldCreateCoach_WhenNameIsValid()
+    public void Create_ShouldCreateAthlete_WhenNameIsValid()
     {
         const string name = "John Doe";
 
-        var coach = Coach.Create(name);
+        var coach = Athlete.Create(name);
         
         coach.Id.Should().NotBe(Guid.Empty);
         coach.Name.Should().Be(name);
@@ -22,7 +22,7 @@ public class CoachUnitTests
     [InlineData(" ")]
     public void Create_ShouldThrowArgumentException_WhenNameIsNullOrWhiteSpace(string? name)
     {
-        var act = () => Coach.Create(name);
+        var act = () => Athlete.Create(name);
         
         act.Should().Throw<ArgumentNullException>();
     }

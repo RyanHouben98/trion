@@ -16,6 +16,9 @@ public sealed class Session
 
     public static Session Create(string title)
     {
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentNullException(nameof(title));
+        
         return new Session(SessionId.New(), title);
     }
 }
