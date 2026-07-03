@@ -1,6 +1,10 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/Trion.Application/Trion.Application.csproj" />
+    <Project Path="src/Trion.Contracts/Trion.Contracts.csproj" />
     <Project Path="src/Trion.Domain/Trion.Domain.csproj" />
+    <Project Path="src/Trion.Infrastructure/Trion.Infrastructure.csproj" />
+    <Project Path="src/Trion.WebApi/Trion.WebApi.csproj" />
   </Folder>
   <Folder Name="/test/">
     <Project Path="test/Trion.Domain.UnitTests/Trion.Domain.UnitTests.csproj" />

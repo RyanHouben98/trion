@@ -8,6 +8,11 @@ public sealed class Activity
     
     public string Title { get; }
     
+    /**
+     * Empty constructor used for EF Core.
+     */
+    private Activity() { }
+    
     private  Activity(ActivityId id, string title)
     {
         Id = id;

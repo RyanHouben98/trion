@@ -7,6 +7,11 @@ public sealed class Athlete
     public AthleteId Id { get; }
     
     public string Name { get; }
+    
+    /**
+     * Empty constructor used for EF Core.
+     */
+    private  Athlete() { }
 
     private Athlete(AthleteId athleteId, string name)
     {
