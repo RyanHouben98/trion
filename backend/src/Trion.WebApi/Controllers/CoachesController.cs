@@ -1,5 +1,7 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Trion.Application.Coaches.Queries.GetCoach;
+using Trion.Application.Coaches.Queries.ListCoaches;
 using Trion.Contracts.CoachContracts;
 using Trion.Domain.CoachAggregate;
 using Trion.Domain.CoachAggregate.ValueObjects;
@@ -9,26 +11,30 @@ namespace Trion.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CoachesController(ApplicationDbContext dbContext) : ControllerBase
+public class CoachesController(ApplicationDbContext dbContext, ISender sender) : ControllerBase
 {
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
-        var coachId = CoachId.From(id);
-        var coach = await dbContext.Coaches.FindAsync(coachId);
-        
-        if (coach is null)
-            return NotFound();
-        
-        return Ok(coach);
+        var query = new GetCoachQuery(id);
+
+        var result = await sender.Send(query);
+
+        return result.Match(
+            okResult => Ok(okResult),
+            _ => Problem());
     }
     
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        var coaches = await dbContext.Coaches.ToListAsync();
+        var query = new ListCoachesQuery();
         
-        return Ok(coaches);
+        var result = await sender.Send(query);
+
+        return result.Match(
+            okResult => Ok(okResult),
+            _ => Problem());
     }
 
     [HttpPost]

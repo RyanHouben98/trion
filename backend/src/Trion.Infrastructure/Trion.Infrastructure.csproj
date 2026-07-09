@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Trion.Application\Trion.Application.csproj" />
     <ProjectReference Include="..\Trion.Domain\Trion.Domain.csproj" />
   </ItemGroup>
 
