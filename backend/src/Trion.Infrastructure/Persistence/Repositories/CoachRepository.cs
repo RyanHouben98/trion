@@ -17,4 +17,16 @@ public sealed class CoachRepository(ApplicationDbContext dbContext) : ICoachRepo
         return await dbContext.Coaches
             .ToListAsync();
     }
+
+    public void AddCoach(Coach coach)
+    {
+        dbContext.Coaches
+            .Add(coach);
+    }
+
+    public void RemoveCoach(Coach coach)
+    {
+        dbContext.Coaches
+            .Remove(coach);
+    }
 }

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Trion.Application.Common.Interfaces;
 using Trion.Domain.CoachAggregate;
 using Trion.Infrastructure.Persistence;
 using Trion.Infrastructure.Persistence.Repositories;
@@ -20,6 +21,9 @@ public static class DependencyInjection
         
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
+            
+            services.AddScoped<IUnitOfWork>(options => 
+                options.GetRequiredService<ApplicationDbContext>());
 
             services.RegisterRepositories();
         

@@ -1,17 +1,16 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Trion.Application.Coaches.Commands.CreateCoach;
+using Trion.Application.Coaches.Commands.DeleteCoach;
+using Trion.Application.Coaches.Commands.UpdateCoach;
 using Trion.Application.Coaches.Queries.GetCoach;
 using Trion.Application.Coaches.Queries.ListCoaches;
 using Trion.Contracts.CoachContracts;
-using Trion.Domain.CoachAggregate;
-using Trion.Domain.CoachAggregate.ValueObjects;
-using Trion.Infrastructure.Persistence;
 
 namespace Trion.WebApi.Controllers;
 
-[ApiController]
 [Route("[controller]")]
-public class CoachesController(ApplicationDbContext dbContext, ISender sender) : ControllerBase
+public class CoachesController(ISender sender) : ApiController
 {
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> Get([FromRoute] Guid id)
@@ -20,11 +19,9 @@ public class CoachesController(ApplicationDbContext dbContext, ISender sender) :
 
         var result = await sender.Send(query);
 
-        return result.Match(
-            okResult => Ok(okResult),
-            _ => Problem());
+        return ToActionResult(result, Ok);
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> List()
     {
@@ -32,21 +29,17 @@ public class CoachesController(ApplicationDbContext dbContext, ISender sender) :
         
         var result = await sender.Send(query);
 
-        return result.Match(
-            okResult => Ok(okResult),
-            _ => Problem());
+        return ToActionResult(result, Ok);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateCoachRequest request)
     {
-        var coach = Coach.Create(request.Name);
+        var command = new CreateCoachCommand(request.Name);
         
-        await dbContext.Coaches.AddAsync(coach);
-        
-        await dbContext.SaveChangesAsync();
-        
-        return Created(nameof(Get), new { id = coach.Id });
+        var result = await sender.Send(command);
+
+        return ToActionResult(result, value => Created(nameof(Get), value));
     }
     
     [HttpPut("{id:guid}")]
@@ -54,32 +47,20 @@ public class CoachesController(ApplicationDbContext dbContext, ISender sender) :
         [FromRoute] Guid id,
         [FromBody] UpdateCoachRequest request)
     {
-        var coachId = CoachId.From(id);
-        var coach = await dbContext.Coaches.FindAsync(coachId);
+        var command = new UpdateCoachCommand(id, request.Name);
         
-        if (coach is null)
-            return NotFound();
+        var result = await sender.Send(command);
         
-        coach.Update(request.Name);
-        
-        await  dbContext.SaveChangesAsync();
-        
-        return NoContent();
+        return ToActionResult(result, _ => NoContent());
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task <IActionResult> Delete([FromRoute] Guid id)
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
-        var coachId = CoachId.From(id);
-        var coach = await dbContext.Coaches.FindAsync(coachId);
-        
-        if (coach is null)
-            return NotFound();
-        
-        dbContext.Coaches.Remove(coach);
-        
-        await dbContext.SaveChangesAsync();
-        
-        return NoContent();
+        var command = new DeleteCoachCommand(id);
+
+        var result = await sender.Send(command);
+
+        return ToActionResult(result, _ => NoContent());
     }
 }
