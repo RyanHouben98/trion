@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Trion.Application.Common.Interfaces;
+using Trion.Domain.AthleteAggregate;
 using Trion.Domain.CoachAggregate;
 using Trion.Infrastructure.Persistence;
 using Trion.Infrastructure.Persistence.Repositories;
@@ -33,6 +34,7 @@ public static class DependencyInjection
         private IServiceCollection RegisterRepositories()
         {
             services.AddScoped<ICoachRepository, CoachRepository>();
+            services.AddScoped<IAthleteRepository, AthleteRepository>();
         
             return services;
         }

@@ -6,7 +6,7 @@ public sealed class Athlete
 {
     public AthleteId Id { get; }
     
-    public string Name { get; }
+    public string Name { get; private set; }
     
     /**
      * Empty constructor used for EF Core.
@@ -25,5 +25,10 @@ public sealed class Athlete
             throw new ArgumentNullException(nameof(name));
         
         return new Athlete(AthleteId.New(), name);
+    }
+    
+    public void Update(string name)
+    {
+        Name = name;
     }
 }
