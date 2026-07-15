@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/host/">
+    <Project Path="src/Trion.AppHost/Trion.AppHost.csproj" />
+    <Project Path="src/Trion.ServiceDefaults/Trion.ServiceDefaults.csproj" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/Trion.Application/Trion.Application.csproj" />
     <Project Path="src/Trion.Contracts/Trion.Contracts.csproj" />

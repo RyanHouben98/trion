@@ -20,6 +20,7 @@
     <ProjectReference Include="..\Trion.Application\Trion.Application.csproj" />
     <ProjectReference Include="..\Trion.Contracts\Trion.Contracts.csproj" />
     <ProjectReference Include="..\Trion.Infrastructure\Trion.Infrastructure.csproj" />
+    <ProjectReference Include="..\Trion.ServiceDefaults\Trion.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>

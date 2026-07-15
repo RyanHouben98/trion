@@ -15,13 +15,13 @@ public static class DependencyInjection
     {
         public IServiceCollection AddInfrastructure(IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-        
+            var connectionString = configuration.GetConnectionString("triondb");
+
             if (string.IsNullOrEmpty(connectionString))
                 throw new InvalidOperationException("Trion connection string not configured");
-        
+
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(connectionString));
             
             services.AddScoped<IUnitOfWork>(options => 
                 options.GetRequiredService<ApplicationDbContext>());
