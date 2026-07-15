@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
@@ -6,6 +6,17 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [backendStatus, setBackendStatus] = useState('checking backend...')
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/coaches`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
+        return res.json()
+      })
+      .then((coaches) => setBackendStatus(`backend reachable — ${coaches.length} coach(es)`))
+      .catch((err) => setBackendStatus(`backend unreachable — ${err.message}`))
+  }, [])
 
   return (
     <>
@@ -28,6 +39,7 @@ function App() {
         >
           Count is {count}
         </button>
+        <p>{backendStatus}</p>
       </section>
 
       <div className="ticks"></div>
